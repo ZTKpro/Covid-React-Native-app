@@ -1,7 +1,8 @@
 import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 
 import CreatedBy from "./assets/Components/createdBy";
+import Stats from "./assets/Components/stats";
 
 const navItems = [
   { text: "Statistics", Link: "aaa" },
@@ -11,14 +12,14 @@ const navItems = [
 
 export default function App() {
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Image style={styles.header} source={require("./assets/header.svg")} />
       <View style={styles.bottom}>
         <Text style={styles.h1}>Covid</Text>
         <View style={styles.navItemBox}>
           {navItems.map((item) => {
             return (
-              <View style={styles.navItem}>
+              <View key={item.text} style={styles.navItem}>
                 <Text style={styles.navItemText}>{item.text}</Text>
               </View>
             );
@@ -26,18 +27,21 @@ export default function App() {
         </View>
       </View>
       <CreatedBy></CreatedBy>
-    </View>
+      <Stats></Stats>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#F9F9F9",
+    backgroundColor: "white",
+    overflow: "hidden",
+    height: "110vh",
   },
   h1: {
     fontSize: "31px",
     fontWeight: "600",
-    marginBottom: "10px",
+    marginBottom: 10,
     textAlign: "center",
     color: "#707070",
   },
@@ -55,7 +59,6 @@ const styles = StyleSheet.create({
   navItemBox: { marginTop: 25 },
   navItem: {
     backgroundColor: "#FFFFFF",
-    textAlign: "center",
     marginBottom: 30,
     width: "90vw",
     padding: 28,
@@ -73,6 +76,5 @@ const styles = StyleSheet.create({
   },
   navItemText: {
     fontSize: 22,
-    color: "#707070",
   },
 });
