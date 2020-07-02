@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Image } from "react-native";
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Created by</Text>
+      <Text style={styles.createdBy}>Created by</Text>
       <Image style={styles.logo} source={require("../Logo.svg")}></Image>
     </View>
   );
@@ -13,10 +13,15 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     color: "#707070",
-    display: "flex",
+    flex: 1,
     width: "100%",
-    borderWidth: 4,
-    borderColor: "red",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    padding: 20,
+  },
+  createdBy: {
+    width: "25%",
   },
   logo: {
     height: 30,

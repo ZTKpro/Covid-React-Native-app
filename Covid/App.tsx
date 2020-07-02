@@ -43,11 +43,12 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    height: 240,
+    height: 300,
   },
   bottom: {
     marginTop: 25,
     height: "100%",
+    maxHeight: 450,
     width: "100%",
     backgroundColor: "#F9F9F9",
   },
