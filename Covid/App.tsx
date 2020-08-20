@@ -1,8 +1,16 @@
-import React from "react";
-import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 
 import CreatedBy from "./assets/Components/createdBy";
 import Stats from "./assets/Components/stats";
+import DisplayInstruction from "./assets/Components/displayInstruction";
 
 const navItems = [
   { text: "Statistics", Link: "aaa" },
@@ -11,23 +19,53 @@ const navItems = [
 ];
 
 export default function App() {
+  const [collapseStat, setCollapseStat] = useState(false);
+  const [Router, setRouter] = useState("INSTRUCTION");
+  const ChangeRouter = () => {
+    setRouter("HOMEPAGE");
+  };
+  const ToggleState = () => {
+    setCollapseStat(!collapseStat);
+  };
   return (
     <ScrollView style={styles.container}>
-      <Image style={styles.header} source={require("./assets/header.svg")} />
-      <View style={styles.bottom}>
-        <Text style={styles.h1}>Covid</Text>
-        <View style={styles.navItemBox}>
-          {navItems.map((item) => {
-            return (
-              <View key={item.text} style={styles.navItem}>
-                <Text style={styles.navItemText}>{item.text}</Text>
-              </View>
-            );
-          })}
+      {Router == "HOMEPAGE" ? (
+        <Image style={styles.header} source={require("./assets/header.svg")} />
+      ) : (
+        <Text></Text>
+      )}
+      {Router == "HOMEPAGE" ? (
+        <View style={styles.bottom}>
+          <Text style={styles.h1}>Covid</Text>
+          <View style={styles.navItemBox}>
+            {navItems.map((item) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    item.text == "Statistics"
+                      ? setCollapseStat(!collapseStat)
+                      : "";
+                    item.text == "How to care?" ? setRouter("INSTRUCTION") : "";
+                  }}
+                  key={item.text}
+                  style={styles.navItem}
+                >
+                  <Text style={styles.navItemText}>{item.text}</Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
         </View>
-      </View>
-      <CreatedBy></CreatedBy>
-      <Stats></Stats>
+      ) : (
+        <Text></Text>
+      )}
+
+      {collapseStat ? <Stats ToggleFun={ToggleState}></Stats> : <Text></Text>}
+      {Router == "INSTRUCTION" ? (
+        <DisplayInstruction ToggleFun={ChangeRouter}></DisplayInstruction>
+      ) : (
+        <Text></Text>
+      )}
     </ScrollView>
   );
 }

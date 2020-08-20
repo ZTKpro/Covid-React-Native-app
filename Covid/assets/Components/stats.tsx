@@ -8,12 +8,15 @@ import {
   TouchableHighlight,
 } from "react-native";
 
-export default function Stats() {
+interface ToggleProps {
+  ToggleFun: () => void;
+}
+
+export default function Stats(Props: ToggleProps) {
   const [death, setDeath] = useState(0);
   const [newRec, setNewRec] = useState(0);
   const [confirmed, setConfirmed] = useState(0);
   const [ratio, setRatio] = useState(0);
-  const [show, setShow] = useState(true);
   useEffect(() => {
     fetch("https://api.covid19api.com/summary")
       .then((Res) => Res.json())
@@ -34,25 +37,39 @@ export default function Stats() {
     { text: "Death ratio", number: ratio, procent: true },
   ];
 
+  const checkColor = (e: any) => {
+    if (e.text.toUpperCase() == "DEATHS") {
+      return styles.statsRed;
+    } else if (e.text.toUpperCase() == "RECOVERD") {
+      return styles.statsGreen;
+    } else {
+      return styles.stats;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <TouchableHighlight
         onPress={() => {
-          setShow(false);
+          Props.ToggleFun();
         }}
         underlayColor="white"
       >
         <View style={styles.close}></View>
       </TouchableHighlight>
-      {StatsItems.map((item) => {
+      {StatsItems.map((item) => (
         <View key={item.text} style={styles.statsItem}>
           <Text style={styles.statsText}>{item.text}</Text>
-          <Text style={styles.stats}>
-            {Math.round(item.number)}
+          <Text style={checkColor(item)}>
+            {item.text.toUpperCase() == ""
+              ? Math.round(item.number)
+              : item.number.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}
             {item.procent ? "%" : ""}
           </Text>
-        </View>;
-      })}
+        </View>
+      ))}
     </View>
   );
 }
@@ -108,5 +125,13 @@ const styles = StyleSheet.create({
   },
   stats: {
     fontSize: 30,
+  },
+  statsRed: {
+    fontSize: 30,
+    color: "red",
+  },
+  statsGreen: {
+    fontSize: 30,
+    color: "lightgreen",
   },
 });
